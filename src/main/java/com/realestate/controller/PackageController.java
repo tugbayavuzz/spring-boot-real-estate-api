@@ -3,6 +3,7 @@ package com.realestate.controller;
 import com.realestate.model.dto.PackageDTO;
 import com.realestate.model.response.BaseResponse;
 import com.realestate.model.response.PackageResponse;
+import com.realestate.queue.RabbitMqService;
 import com.realestate.service.PackageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ import java.util.List;
 public class PackageController {
 
     private final PackageService packageService;
+    private final RabbitMqService rabbitMqService;
 
     @GetMapping("/{userId}")
     @Operation(summary = "Get all packages by user id")
@@ -38,6 +40,11 @@ public class PackageController {
     @Operation(summary = "Update a package")
     public ResponseEntity<BaseResponse> updateById(@PathVariable Long id) {
         return ResponseEntity.ok(packageService.updateById(id));
+    }
+
+    @GetMapping("/message")
+    public void updateBy() {
+        rabbitMqService.sendMessage("hello");
     }
 
 }
